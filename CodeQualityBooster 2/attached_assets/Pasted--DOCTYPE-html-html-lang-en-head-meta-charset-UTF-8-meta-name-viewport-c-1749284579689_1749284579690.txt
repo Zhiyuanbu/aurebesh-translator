@@ -1,0 +1,248 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurebesh Font Translator</title>
+    <style>
+      @font-face {
+        font-family: 'Aurebesh AF';
+        font-style: normal;
+        font-weight: 700;
+        src: url(https://cdn.jsdelivr.net/gh/LogicismDev/aurebesh-discord-font/fonts/AurebeshAF-Canon.woff2) format("woff2");
+      }
+      @font-face {
+        font-family: 'Aurebesh Code';
+        font-style: normal;
+        font-weight: 400;
+        src: url(https://cdn.jsdelivr.net/gh/LogicismDev/aurebesh-discord-font/fonts/AurebeshCode.woff2) format("woff2");
+      }
+
+      :root {
+        --font-primary: "Aurebesh AF", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --font-display: "Aurebesh AF", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --font-headline: "Aurebesh AF", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --font-code: "Aurebesh Code", Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .input-section, .output-section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        resize: vertical;
+      }
+
+      .output-text {
+        min-height: 150px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+      }
+
+      .aurebesh-regular {
+        font-family: var(--font-primary);
+        font-size: 20px;
+      }
+
+      .aurebesh-code {
+        font-family: var(--font-code);
+        font-size: 20px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      button, select {
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      select {
+        background-color: #2196F3;
+      }
+
+      .font-size-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      input[type="range"] {
+        width: 100px;
+      }
+
+      .size-value {
+        min-width: 40px;
+      }
+
+      .copy-button {
+        background-color: #ff9800;
+      }
+
+      .copy-button:hover {
+        background-color: #e68a00;
+      }
+
+      .font-preview {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px dashed #ccc;
+        border-radius: 4px;
+      }
+
+      .font-preview h3 {
+        margin-top: 0;
+        color: #555;
+      }
+
+      .preview-text {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Aurebesh Font Translator</h1>
+    
+    <div class="container">
+      <div class="input-section">
+        <h2>Enter Text</h2>
+        <textarea id="input-text" placeholder="Type or paste your text here..."></textarea>
+        <div class="controls">
+          <button id="translate-btn">Translate</button>
+          <select id="font-select">
+            <option value="aurebesh-regular">Aurebesh Regular</option>
+            <option value="aurebesh-code">Aurebesh Code</option>
+          </select>
+          <div class="font-size-control">
+            <label for="font-size">Size:</label>
+            <input type="range" id="font-size" min="12" max="48" value="20">
+            <span id="size-value" class="size-value">20px</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="output-section">
+        <h2>Aurebesh Translation</h2>
+        <div class="controls">
+          <button id="copy-btn" class="copy-button">Copy to Clipboard</button>
+        </div>
+        <div id="output-text" class="output-text aurebesh-regular"></div>
+      </div>
+
+      <div class="font-preview">
+        <h3>Font Preview</h3>
+        <div class="preview-text">
+          <p><strong>Aurebesh Regular (AF):</strong></p>
+          <p class="aurebesh-regular">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+          <p class="aurebesh-regular">abcdefghijklmnopqrstuvwxyz</p>
+          <p class="aurebesh-regular">0123456789</p>
+        </div>
+        <div class="preview-text">
+          <p><strong>Aurebesh Code:</strong></p>
+          <p class="aurebesh-code">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+          <p class="aurebesh-code">abcdefghijklmnopqrstuvwxyz</p>
+          <p class="aurebesh-code">0123456789</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        const translateBtn = document.getElementById('translate-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const fontSelect = document.getElementById('font-select');
+        const fontSizeSlider = document.getElementById('font-size');
+        const sizeValue = document.getElementById('size-value');
+
+        // Update font size display
+        fontSizeSlider.addEventListener('input', function() {
+          const size = this.value;
+          sizeValue.textContent = `${size}px`;
+          outputText.style.fontSize = `${size}px`;
+        });
+
+        // Change font family
+        fontSelect.addEventListener('change', function() {
+          outputText.className = `output-text ${this.value}`;
+        });
+
+        // Translate text (really just copying it, as the font does the "translation")
+        translateBtn.addEventListener('click', function() {
+          outputText.textContent = inputText.value;
+        });
+
+        // Also translate on input change
+        inputText.addEventListener('input', function() {
+          outputText.textContent = this.value;
+        });
+
+        // Copy to clipboard
+        copyBtn.addEventListener('click', function() {
+          const textToCopy = outputText.textContent;
+          navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+              const originalText = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(() => {
+                copyBtn.textContent = originalText;
+              }, 2000);
+            })
+            .catch(err => {
+              console.error('Failed to copy text: ', err);
+              alert('Failed to copy text. Please try again.');
+            });
+        });
+
+        // Initialize with some sample text
+        inputText.value = "Welcome to the Aurebesh Translator!";
+        outputText.textContent = inputText.value;
+      });
+    </script>
+  </body>
+  </html>
